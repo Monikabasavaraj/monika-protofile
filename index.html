@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monika B | Portfolio</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { background: var(--bg); color: var(--text); transition: 0.3s; }
+    :root { --bg: #f5f5f5; --text: #222; --card: #fff; }
+    .dark { --bg: #111; --text: #fff; --card: #1e1e1e; }
+
+    header { background: #000; color: #fff; padding: 20px; position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; }
+    nav a { margin: 0 15px; color: #fff; text-decoration: none; font-weight: bold; }
+    .toggle-btn { background: #fff; color: #000; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+
+    .hero { height: 90vh; display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; padding: 20px; }
+    .hero h1 { font-size: 48px; }
+    .hero p { font-size: 20px; margin-top: 10px; }
+    #typing { color: #ff6600; font-weight: bold; }
+
+    .section { padding: 60px 10%; }
+    .section h2 { margin-bottom: 20px; font-size: 32px; text-align: center; }
+
+    .about { text-align: center; max-width: 700px; margin: auto; font-size: 18px; }
+    .resume-btn { display: block; margin: 20px auto; width: fit-content; padding: 10px 20px; background: #000; color: #fff; border-radius: 5px; text-decoration: none; }
+
+    /* Skill Bars */
+    .skills { max-width: 700px; margin: auto; }
+    .skill { margin-bottom: 20px; }
+    .bar { width: 100%; background: #ccc; border-radius: 5px; overflow: hidden; }
+    .bar-fill { height: 15px; width: 0; background: #ff6600; transition: 1s; }
+
+    /* Slider */
+    .slider { display: flex; overflow-x: auto; gap: 20px; padding: 20px; scroll-snap-type: x mandatory; }
+    .slide { min-width: 280px; background: var(--card); padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); scroll-snap-align: center; }
+
+    form { background: var(--card); padding: 20px; border-radius: 10px; max-width: 500px; margin: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    form input, form textarea { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
+    form button { background: #000; color: #fff; padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="toggle-btn" id="toggle">🌙 Dark Mode</div>
+  </header>
+
+  <section class="hero" id="home">
+    <h1>Hi, I'm Monika</h1>
+    <p>I am a <span id="typing"></span></p>
+  </section>
+
+  <section class="section" id="about">
+    <h2>About Me</h2>
+    <p class="about">I build interactive websites, AI-powered systems, and modern software applications. I love learning & experimenting with new tools.</p>
+    <a href="C:\Users\monik\OneDrive\Desktop\Monika_B_resume.pdf"class="resume-btn">Download Resume</a>
+  </section>
+
+  <section class="section" id="skills">
+    <h2>Skills</h2>
+    <div class="skills">
+      <div class="skill"><p>HTML</p><div class="bar"><div class="bar-fill" data-fill="95%"></div></div></div>
+      <div class="skill"><p>CSS</p><div class="bar"><div class="bar-fill" data-fill="85%"></div></div></div>
+      <div class="skill"><p>JavaScript</p><div class="bar"><div class="bar-fill" data-fill="75%"></div></div></div>
+      <div class="skill"><p>Java</p><div class="bar"><div class="bar-fill" data-fill="80%"></div></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <h2>Projects</h2>
+    <div class="slider">
+      <div class="slide"><h3>AI Chatbot</h3><p>NLP-based personalized chatbot.</p></div>
+      <div class="slide"><h3>AI Area Detection</h3><p>Detects unsafe areas using ML.</p></div>
+      <div class="slide"><h3>Portfolio Website</h3><p>Responsive & animated portfolio.</p></div>
+      <div class="slide"><h3>Task Manager App</h3><p>Desktop app with CRUD features.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <h2>Contact Me</h2>
+    <form id="contact-form">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+<script>
+  // Typing Effect
+  const words = ["Frontend Developer", "AI Enthusiast", "Software Developer"];
+  let i = 0, j = 0, current = "", isDeleting = false;
+
+  function type() {
+    current = words[i];
+    document.getElementById("typing").textContent = current.substring(0, j);
+
+    if (!isDeleting && j < current.length) j++;
+    else if (isDeleting && j > 0) j--;
+    else if (!isDeleting && j === current.length) isDeleting = true;
+    else { isDeleting = false; i = (i + 1) % words.length; }
+
+    setTimeout(type, isDeleting ? 80 : 120);
+  }
+  type();
+
+  // Smooth Scroll
+  document.querySelectorAll('nav a').forEach(a => {
+    a.onclick = e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior:'smooth' });
+    };
+  });
+
+  // Dark mode
+  const toggle = document.getElementById("toggle");
+  toggle.onclick = () => {
+    document.body.classList.toggle("dark");
+    toggle.textContent = document.body.classList.contains("dark") ? "☀️ Light Mode" : "🌙 Dark Mode";
+  };
+
+  // Animate Skill Bars
+  const bars = document.querySelectorAll('.bar-fill');
+  window.addEventListener('scroll', () => {
+    bars.forEach(b => { b.style.width = b.dataset.fill; });
+  });
+
+  // EmailJS Init
+  emailjs.init("YOUR_EMAILJS_PUBLIC_KEY");
+
+  // EmailJS Form Submission
+  document.getElementById("contact-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", this)
+      .then(() => alert("Message sent successfully!"))
+      .catch(() => alert("Failed to send message."));
+  });
+</script>
+
+</body>
+</html>
